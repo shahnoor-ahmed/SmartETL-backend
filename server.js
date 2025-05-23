@@ -46,7 +46,7 @@ function authenticate(req, res, next) {
 
   const token = authHeader.split(" ")[1];
   try {
-    const decoded = jwt.verify(token, "SECRET");
+    const decoded = jwt.verify(token, SECRET);
     req.user = decoded;
     next();
   } catch {
@@ -77,7 +77,7 @@ app.post("/api/login", async (req, res) => {
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
-    const token = jwt.sign({ email }, "SECRET", { expiresIn: "1h" });
+    const token = jwt.sign({ email }, SECRET, { expiresIn: "1h" });
     res.json({ token });
   } catch (err) {
     res.status(500).json({ error: "Login failed" });
